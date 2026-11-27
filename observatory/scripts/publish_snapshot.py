@@ -31,9 +31,12 @@ def publish(root: Path, branch: str = "main", retries: int = 3) -> None:
     if retries < 1 or retries > 5:
         raise PublishError("Invalid publication retry count")
 
+    from publication_bundle import export_bundle
+    export_bundle(root)
+
     command(root, "git", "config", "user.name", "github-actions[bot]")
     command(root, "git", "config", "user.email", "41898282+github-actions[bot]@users.noreply.github.com")
-    command(root, "git", "add", "--", "data/snapshot.json", "index.html")
+    command(root, "git", "add", "--", "data/snapshot.json", "index.html", "../data/snapshot.json", "../index.html")
     if command(root, "git", "diff", "--cached", "--quiet", allow_failure=True).returncode == 0:
         print("No changed snapshot or page; nothing to publish", flush=True)
         return
@@ -57,7 +60,7 @@ def publish(root: Path, branch: str = "main", retries: int = 3) -> None:
             # not get overwritten by HTML generated before an editor's commit.
             command(root, sys.executable, "build.py")
             command(root, sys.executable, "verify.py")
-            command(root, "git", "add", "--", "index.html")
+            command(root, "git", "add", "--", "index.html", "../index.html", "../data/snapshot.json")
             if command(root, "git", "diff", "--cached", "--quiet", allow_failure=True).returncode != 0:
                 command(root, "git", "commit", "-m", "Rebuild UTYA page after upstream changes")
         push = command(root, "git", "push", "origin", "HEAD:refs/heads/main", allow_failure=True)

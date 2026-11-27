@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 from scripts.icon_pack import embedded_script
 from scripts.project_runtime import publish_html
+from scripts.publication_bundle import export_bundle
 
 ROOT = Path(__file__).resolve().parent
 WEB = ROOT / "web"
@@ -39,3 +40,6 @@ if any(x in result for x in ("/*APP*/", "/*STYLE*/", "/*LOADER*/", "/*MARKET_CAP
                              "__PROJECT_ART__", "__PROJECT_BG__", "__BADGE_")):
     raise ValueError("Unresolved template marker")
 publish_html(ROOT, result, snapshot)
+
+# Keep the public GitHub paths used by the standalone snapshot loader current.
+export_bundle(ROOT)
