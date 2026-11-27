@@ -33,7 +33,7 @@ jobs:
         with:
           node-version: '22'
       - name: Install dependencies
-        run: python3 -m pip install -r observatory/requirements.txt
+        run: python3 -m pip install -r requirements.txt
       - name: Validate generated project
         working-directory: observatory
         run: |
