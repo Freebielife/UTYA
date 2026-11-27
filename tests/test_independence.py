@@ -18,8 +18,12 @@ class IndependenceTests(unittest.TestCase):
         self.assertEqual(check_reference(),13)
         for name in ('assets.py','trades.py','badges.py','observatory.py','web/app.js','web/page.html'):
             self.assertTrue(source_file(name).is_relative_to(REFERENCE))
-        self.assertFalse((ROOT/'index.html').exists())
-        self.assertFalse((ROOT/'data/snapshot.json').exists())
+        # This repository hosts a configured project as well as local factory sources.
+        # Public artifacts must match that project; factory inputs stay manifest-pinned.
+        project_root = ROOT / 'observatory'
+        self.assertEqual((ROOT/'index.html').read_bytes(), (project_root/'index.html').read_bytes())
+        self.assertEqual(json.loads((ROOT/'data/snapshot.json').read_text()),
+                         json.loads((project_root/'data/snapshot.json').read_text()))
         self.assertNotIn('from assets import', (ROOT/'scripts/discover_project.py').read_text())
         self.assertNotIn('ludomanDev', (REFERENCE/'web/app.js').read_text())
 
