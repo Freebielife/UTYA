@@ -1,0 +1,112 @@
+{
+  "slug": "utya",
+  "name": "Utya",
+  "symbol": "UTYA",
+  "master": "EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA",
+  "decimals": 9,
+  "github": {
+    "owner": "Freebielife",
+    "repo": "UTYA"
+  },
+  "pools": [
+    {
+      "address": "EQCO9NDT4Il25_4ZpHIOgMAUbRJvpsI9pLzqhD8X7eTVB7X_",
+      "dex": "stonfi",
+      "quote": "TON",
+      "evidence": "https://tonapi.io/v2/accounts/EQCO9NDT4Il25_4ZpHIOgMAUbRJvpsI9pLzqhD8X7eTVB7X_/events?limit=100"
+    },
+    {
+      "address": "EQAfBh_H7aVslVbzQNrx6js37dQZz10uAp8uikQwFbd3aUvM",
+      "dex": "dedust",
+      "quote": "TON",
+      "evidence": "https://tonapi.io/v2/accounts/EQAfBh_H7aVslVbzQNrx6js37dQZz10uAp8uikQwFbd3aUvM/events?limit=100"
+    },
+    {
+      "address": "EQDPHP13hChIXYsWH43gNzsDzAMTIDXaV0fi-4CC1fr75iTg",
+      "dex": "stonfi",
+      "quote": "TON",
+      "evidence": "https://tonapi.io/v2/accounts/EQDPHP13hChIXYsWH43gNzsDzAMTIDXaV0fi-4CC1fr75iTg/events?limit=100"
+    }
+  ],
+  "primary_pool": "EQCO9NDT4Il25_4ZpHIOgMAUbRJvpsI9pLzqhD8X7eTVB7X_",
+  "links": {
+    "website": "https://tonutya.com",
+    "telegram": "https://t.me/UtyaOfficial",
+    "x": "https://x.com/tonutyacoin",
+    "swap": "https://app.ston.fi/swap?chartVisible=false&ft=TON&tt=EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA"
+  },
+  "services": {
+    "UQD4uGNdB4a3f52mYOZf0x1nCmdd1DAvrLppL0a1cetTYCQx": "Binance",
+    "EQDPfqI17W9lF-3OmAJu92GOn22BoTMdTmW6cY4s0V-ArRRY": "Bybit"
+  },
+  "engine_version": "1.3.0",
+  "discovery": {
+    "checkedAt": 1795749037,
+    "sources": [
+      "https://tonapi.io/v2/jettons/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA",
+      "https://api.geckoterminal.com/api/v2/networks/ton/tokens/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA/pools?page=1",
+      "https://api.geckoterminal.com/api/v2/networks/ton/tokens/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA/pools?page=2",
+      "https://api.geckoterminal.com/api/v2/networks/ton/tokens/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA/pools?page=3",
+      "https://api.geckoterminal.com/api/v2/networks/ton/tokens/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA/pools?page=4"
+    ],
+    "primaryPoolPolicy": "largest indexed USD liquidity among swap-verified supported TON pools"
+  },
+  "project_description": {
+    "text": "UTYA is presented by its project as a community memecoin inspired by Telegram Duck imagery. The official website lists the same master contract that TonAPI identifies as Utya (UTYA). This description summarizes the project’s own presentation and does not verify promotional claims about performance or utility.",
+    "origin": "reviewed_sources",
+    "sources": [
+      "https://tonutya.com/",
+      "https://tonapi.io/v2/jettons/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA"
+    ],
+    "checked_at": "2026-11-27"
+  },
+  "no_flag": true,
+  "flag_source": "No flag supplied by project",
+  "logo_file": "web/project-logo.webp",
+  "logo_origin": "token_metadata",
+  "logo_source": "https://x-xoxox.github.io/utya/256.png",
+  "service_provenance": {
+    "0:f8b8635d0786b77f9da660e65fd31d670a675dd4302facba692f46b571eb5360": {
+      "category": "custody",
+      "source": "User-provided attribution, 2026-11-22; ownership not independently verified"
+    },
+    "0:cf7ea235ed6f6517edce98026ef7618e9f6d81a1331d4e65ba718e2cd15f80ad": {
+      "category": "custody",
+      "source": "User-provided attribution, 2026-11-22; ownership not independently verified"
+    }
+  },
+  "template_repository": "Freebielife/TON-Observatory-Template",
+  "max_html_bytes": 2500000,
+  "ui": {
+    "holders_initial": 10,
+    "holders_expanded": 20
+  },
+  "methodology": {
+    "valuation": "last observed swap in primary_pool times CURRENT total supply; not circulating market cap",
+    "primary_pool": "EQCO9NDT4Il25_4ZpHIOgMAUbRJvpsI9pLzqhD8X7eTVB7X_",
+    "sellers": "sum of successful supported native TON swap sales; service roles excluded",
+    "holders": "balances excluding known services and identified contracts; unclassified accounts may remain until verified",
+    "burns": "accepted burn notifications and zero-address transfers shown as distinct evidence",
+    "usd": "historical TON/USD rate from CoinGecko",
+    "history": "incremental confirmed swaps; missing intervals remain partial"
+  },
+  "branding": {
+    "hero": {
+      "origin": "token_metadata",
+      "source": "https://x-xoxox.github.io/utya/256.png",
+      "file": "web/project-logo.webp"
+    },
+    "sectionFlag": {
+      "source": "No flag supplied by project",
+      "catalogueKey": null,
+      "emoji": null
+    },
+    "channel": "https://t.me/UtyaOfficial"
+  },
+  "metadata_self_description": {
+    "text": "Telegram Duck",
+    "origin": "token_metadata",
+    "source": "https://tonapi.io/v2/jettons/EQBaCgUwOoc6gHCNln_oJzb0mVs79YG7wYoavh-o1ItaneLA",
+    "checked_at": "2026-11-27"
+  }
+}

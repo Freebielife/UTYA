@@ -107,6 +107,7 @@ def main():
     flags.add_argument("--flag-key", help="Explicitly confirmed key in the bundled flag catalogue")
     flags.add_argument("--flag-file", type=Path, help="User-provided custom emoji image, WebP/GIF")
     flags.add_argument("--flag-emoji", help="Explicitly chosen Unicode emoji")
+    flags.add_argument("--no-flag", action="store_true", help="Record that no project flag was provided")
     args = parser.parse_args()
     if not re.fullmatch(r"[A-Za-z0-9-]{1,39}/[A-Za-z0-9_.-]{2,31}", args.github):
         parser.error("Expected owner/repository")
@@ -126,7 +127,7 @@ def main():
             directory = Path(directory)
             prepare_branding(cfg, directory, metadata_image=cfg.pop("_metadata_image", None),
                              website=args.website, channel=args.channel, flag_key=args.flag_key,
-                             flag_file=args.flag_file, flag_emoji=args.flag_emoji)
+                             flag_file=args.flag_file, flag_emoji=args.flag_emoji, no_flag=args.no_flag)
             config = directory / "project.json"
             config.write_text(json.dumps(cfg, ensure_ascii=False))
             scaffold(config, args.output)

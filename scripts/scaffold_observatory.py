@@ -469,7 +469,7 @@ def page_html(source, cfg):
     if count != 1:
         raise ProjectError("Cannot isolate project staking/lock integrations")
     resources = []
-    for key, label in (("website", cfg["name"]), ("telegram", "Telegram"), ("x", "X"), ("staking", "Staking")):
+    for key, label in (("website", cfg["name"]), ("telegram", "Telegram"), ("x", "X"), ("staking", "Staking"), ("swap", "STON.fi swap")):
         if key in cfg.get("links", {}):
             resources.append('<a href="' + html.escape(cfg["links"][key], quote=True) +
                              '" target="_blank" rel="noopener noreferrer">' +

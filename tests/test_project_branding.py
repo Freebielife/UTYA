@@ -76,3 +76,17 @@ class BrandingTests(unittest.TestCase):
         result=subprocess.run([sys.executable,'build.py'],cwd=site,capture_output=True)
         self.assertNotEqual(result.returncode,0)
         self.assertEqual((site/'index.html').read_bytes(),previous)
+
+    def test_explicit_no_flag_builds_without_substitute(self):
+        cfg=dict(self.cfg);cfg.pop('flag_file');cfg['no_flag']=True
+        validate_config(cfg,self.base,ATLAS)
+        config=self.base/'project-no-flag.json';config.write_text(json.dumps(cfg))
+        site=self.base/'site-no-flag';scaffold(config,site)
+        self.assertFalse((site/'web/project-flag.webp').exists())
+        project=json.loads((site/'project.json').read_text())
+        self.assertEqual(project['branding']['sectionFlag']['source'],'No flag supplied by project')
+        with self.assertRaises(BrandingError):
+            validate_config({**cfg,'flag_emoji':'🍉'},self.base,ATLAS)
+        import subprocess,sys
+        subprocess.run([sys.executable,'build.py'],cwd=site,check=True,capture_output=True)
+        subprocess.run([sys.executable,'verify.py'],cwd=site,check=True,capture_output=True)

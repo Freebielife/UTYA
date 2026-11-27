@@ -48,6 +48,9 @@ def publish_html(root, result, snapshot):
         branding = project.get("branding", {})
         if not all(branding.get(key) for key in ("hero", "sectionFlag", "channel")):
             raise ValueError("Official logo, confirmed section flag and project channel are required")
+        if (branding["sectionFlag"].get("source") == "No flag supplied by project" and
+                (branding["sectionFlag"].get("catalogueKey") or branding["sectionFlag"].get("emoji") or branding["sectionFlag"].get("file"))):
+            raise ValueError("No-flag branding must not contain a substitute flag")
         if (branding["channel"] != project.get("links", {}).get("telegram") or
                 branding["hero"]["source"] != project.get("logo_source") or
                 branding["hero"]["origin"] != project.get("logo_origin")):

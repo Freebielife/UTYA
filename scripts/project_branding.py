@@ -40,7 +40,7 @@ def validate_config(cfg, base, atlas_path):
         raise BrandingError("Project channel missing: ask the user for the Telegram channel")
     channel_url(cfg["links"]["telegram"])
     choices = [k for k in ("flag_catalog_key", "flag_file", "flag_emoji") if cfg.get(k)]
-    if len(choices) != 1:
+    if len(choices) > 1 or (not choices and not cfg.get("no_flag")) or (choices and cfg.get("no_flag")):
         raise BrandingError("Confirm one section flag from the catalogue; if absent, ask the user to provide its emoji/image")
     if cfg.get("flag_catalog_key"):
         atlas = json.loads(Path(atlas_path).read_text())
@@ -55,7 +55,7 @@ def validate_config(cfg, base, atlas_path):
                 or any(c.isspace() or (c.isalnum() and not (c.isdigit() and "\u20e3" in emoji)) for c in emoji)):
             raise BrandingError("Use an emoji, not a text label")
         cfg["flag_source"] = "Explicitly selected Unicode emoji"
-    else:
+    elif cfg.get("flag_file"):
         file = Path(cfg["flag_file"])
         if file.is_absolute() or ".." in file.parts or file.suffix.lower() not in (".webp", ".gif"):
             raise BrandingError("Flag must be a relative WebP/GIF emoji image")
@@ -102,7 +102,8 @@ def install(output, cfg, atlas_path):
         css += '\n.brandGlyph.brand-project{background:transparent!important;color:inherit!important;font-size:18px!important;display:inline-flex;align-items:center;justify-content:center;overflow:hidden}\n'
         (web / "telegram-taste.css").write_text(css)
         app = web / "app.js"
-        text = app.read_text().replace('function brandMarkNode(kind){', 'function brandMarkNode(kind){\n if(kind==="project"){const node=el("span",'+json.dumps(cfg['flag_emoji'])+',"brandGlyph brand-project");node.setAttribute("aria-hidden","true");return node;}')
+        glyph = cfg.get("flag_emoji", "")
+        text = app.read_text().replace('function brandMarkNode(kind){', 'function brandMarkNode(kind){\n if(kind==="project"){const node=el("span",'+json.dumps(glyph)+',"brandGlyph brand-project");node.setAttribute("aria-hidden","true");return node;}')
         app.write_text(text)
     page = web / "page.html"
     page.write_text(page.read_text().replace('>Telegram</a>', '>Канал проекта</a>'))
@@ -122,7 +123,7 @@ def install(output, cfg, atlas_path):
     project = output / "project.json"
     saved = json.loads(project.read_text())
     saved["branding"] = {"hero": {"origin": cfg["logo_origin"], "source": cfg["logo_source"], "file": "web/project-logo.webp"},
-                         "sectionFlag": {"source": cfg["flag_source"], "catalogueKey": cfg.get("flag_catalog_key"), "emoji": cfg.get("flag_emoji")},
+                         "sectionFlag": {"source": cfg.get("flag_source", "No flag supplied by project"), "catalogueKey": cfg.get("flag_catalog_key"), "emoji": cfg.get("flag_emoji")},
                          "channel": cfg["links"]["telegram"]}
     if flag:
         saved["branding"]["sectionFlag"]["file"] = "web/"+target.name
@@ -161,7 +162,7 @@ def download(url, *, max_bytes=3_000_000):
         return data
 
 
-def prepare(cfg, directory, *, metadata_image=None, website=None, channel=None, flag_key=None, flag_file=None, flag_emoji=None, read=download):
+def prepare(cfg, directory, *, metadata_image=None, website=None, channel=None, flag_key=None, flag_file=None, flag_emoji=None, no_flag=False, read=download):
     """Resolve branding during setup, then embed local verified raster assets."""
     from PIL import Image
     candidates = [(metadata_image, "token_metadata")] if metadata_image else []
@@ -183,6 +184,9 @@ def prepare(cfg, directory, *, metadata_image=None, website=None, channel=None, 
     cfg.setdefault("links", {})["telegram"] = channel_url(channel)
     if flag_key: cfg["flag_catalog_key"] = flag_key
     elif flag_emoji: cfg["flag_emoji"] = flag_emoji
+    elif no_flag:
+        cfg["no_flag"] = True
+        cfg["flag_source"] = "No flag supplied by project"
     elif flag_file:
         import shutil
         original = Path(flag_file).resolve()

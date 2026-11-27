@@ -25,8 +25,9 @@ chart source. This is indexed event evidence, not an independent contract audit.
 
 The official hero logo is downloaded from token metadata, with `--website` for
 fallback logo and channel discovery from the project's website. The section flag
-must be explicitly selected with one of `--flag-key`, `--flag-file`, `--flag-emoji`.
-A missing logo, channel or flag blocks setup and identifies the required input.
+must be explicitly selected with one of `--flag-key`, `--flag-file`, `--flag-emoji`,
+or its absence explicitly recorded with `--no-flag`. A missing logo or channel
+blocks setup and identifies the required input.
 See BRANDING_STANDARD.md. It generates sources and project.json, refreshes on-chain sections, builds
 index.html and verifies the bundle. `--prepare-only` skips collection/build.
 Only native TON pairs on STON.fi and DeDust are supported by the trade collector.

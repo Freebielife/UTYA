@@ -1,0 +1,58 @@
+name: Refresh UTYA observatory
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - 'observatory/*.py'
+      - 'observatory/**/*.py'
+      - 'observatory/web/**'
+      - 'observatory/scripts/**'
+      - 'observatory/tests/**'
+      - 'observatory/project.json'
+      - 'observatory/common-services.json'
+      - '.github/workflows/update-utya.yml'
+permissions:
+  contents: write
+concurrency:
+  group: utya-observatory-refresh
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 20
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        run: python3 -m pip install -r observatory/requirements.txt
+      - name: Validate generated project
+        working-directory: observatory
+        run: |
+          python3 -m unittest discover -s tests -p 'test_*.py'
+          node --check web/app.js
+          node --test tests/*.test.cjs
+      - name: Collect on-chain data
+        id: collect
+        continue-on-error: true
+        working-directory: observatory
+        run: python3 -m scripts.refresh_observatory
+      - name: Build and verify standalone HTML
+        working-directory: observatory
+        run: |
+          python3 build.py
+          python3 verify.py
+      - name: Commit fresh snapshot and HTML to main
+        working-directory: observatory
+        run: python3 scripts/publish_snapshot.py
+      - name: Report partial collection
+        if: steps.collect.outcome == 'failure'
+        run: exit 1
